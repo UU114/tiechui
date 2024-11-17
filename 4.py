@@ -14,7 +14,7 @@ def random_value(min_val, max_val):
 
 # 读取 attr.xlsx 文件并指定列名
 attr_df = pd.read_excel('attr.xlsx', header=None, names=['校验值', '属性', '最小值', '最大值'])
-print(attr_df.columns)  # 打印列名以检查它们是否正确
+#print(attr_df.columns)  # 打印列名以检查它们是否正确
 attr_dict = {}
 for _, row in attr_df.iterrows():
     key = row['校验值']
@@ -27,14 +27,14 @@ xml_file = 'setitem_new.xml'
 if not os.path.exists(xml_file) or os.path.getsize(xml_file) == 0:
     root = etree.Element("root")
     tree = etree.ElementTree(root)
-    tree.write(xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+    tree.write(xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-16')
 
 # 检查 string_new.xml 文件是否存在，如果不存在则创建一个新的
 string_xml_file = 'string_new.xml'
 if not os.path.exists(string_xml_file) or os.path.getsize(string_xml_file) == 0:
     string_root = etree.Element("string")
     string_tree = etree.ElementTree(string_root)
-    string_tree.write(string_xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+    string_tree.write(string_xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-16')
 
 # 初始化 id
 id = 1001
@@ -96,9 +96,18 @@ with open('setitem2.txt', 'r') as f:
                     piece_bonus3_element = etree.Element("piece_bonus3")
                     piece_bonus3_element.text = piece_bonus3
                     new_element.append(piece_bonus3_element)
+                    
+                    # 生成 fullset_bonus 标签内容
+                    fullset_attrs = random.sample(attr_dict[prefix], 3)
+                    fullset_bonus = f"{fullset_attrs[0][0]} {random_value(fullset_attrs[0][1], fullset_attrs[0][2])};{fullset_attrs[1][0]} {random_value(fullset_attrs[1][1], fullset_attrs[1][2])};{fullset_attrs[2][0]} {random_value(fullset_attrs[2][1], fullset_attrs[2][2])}"
+                    
+                    # 添加 fullset_bonus 标签
+                    fullset_bonus_element = etree.Element("fullset_bonus")
+                    fullset_bonus_element.text = fullset_bonus
+                    new_element.append(fullset_bonus_element)
                 
                 root.append(new_element)
-                tree.write(xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+                tree.write(xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-16')
                 
                 # 向 string_new.xml 添加信息
                 string_tree = etree.parse(string_xml_file)
@@ -121,7 +130,7 @@ with open('setitem2.txt', 'r') as f:
                 string_element.append(string_body_element)
                 
                 string_root.append(string_element)
-                string_tree.write(string_xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+                string_tree.write(string_xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-16')
                 
                 # 更新 id
                 id += 1
@@ -176,9 +185,18 @@ if rows:
         piece_bonus3_element = etree.Element("piece_bonus3")
         piece_bonus3_element.text = piece_bonus3
         new_element.append(piece_bonus3_element)
+        
+        # 生成 fullset_bonus 标签内容
+        fullset_attrs = random.sample(attr_dict[prefix], 3)
+        fullset_bonus = f"{fullset_attrs[0][0]} {random_value(fullset_attrs[0][1], fullset_attrs[0][2])};{fullset_attrs[1][0]} {random_value(fullset_attrs[1][1], fullset_attrs[1][2])};{fullset_attrs[2][0]} {random_value(fullset_attrs[2][1], fullset_attrs[2][2])}"
+        
+        # 添加 fullset_bonus 标签
+        fullset_bonus_element = etree.Element("fullset_bonus")
+        fullset_bonus_element.text = fullset_bonus
+        new_element.append(fullset_bonus_element)
     
     root.append(new_element)
-    tree.write(xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+    tree.write(xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-16')
     
     # 向 string_new.xml 添加信息
     string_tree = etree.parse(string_xml_file)
@@ -201,7 +219,7 @@ if rows:
     string_element.append(string_body_element)
     
     string_root.append(string_element)
-    string_tree.write(string_xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-8')
+    string_tree.write(string_xml_file, pretty_print=True, xml_declaration=True, encoding='UTF-16')
     
     # 更新 id
     id += 1
